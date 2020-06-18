@@ -1,0 +1,6 @@
+food_whitelist:
+  - Apple
+  - Banana
+  - Pear
+  - Pineapple
+food_blacklist: Peanut, Almond, Shellfish
