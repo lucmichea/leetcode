@@ -29,5 +29,7 @@ Note:
 
     You may assume that both strings contain only lowercase letters.
 
-
 """
+
+class Solution:
+    def canConstruct(self, ransomNote: str, magazine: str) -> bool:

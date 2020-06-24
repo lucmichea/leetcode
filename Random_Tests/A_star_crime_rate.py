@@ -52,35 +52,46 @@ class A_star_search:
                 break
             
             ## build the cost function
+            #################
             # diagonal path
+            #################
+
+            # up-right diagonal
             if self.color_grid[x][y] == 0 and not self.in_close_list(x-1, y+1):
                 cost = 1.5 + self.hamming_distance(x-1, y+1)
                 self.checkopenlist(x, y, x-1, y+1, cost, open_list)
             
+            # up-left diagonal
             if self.color_grid[x-1][y-1] == 0 and not self.in_close_list(x-1,y-1):
                 cost = 1.5 + self.hamming_distance(x-1, y-1)
                 self.checkopenlist(x, y, x-1, y-1, cost, open_list)
             
+            # down-left diagonal
             if self.color_grid[[x+1, y-1]] == 0 and not self.in_close_list(x+1,y-1):
                 cost = 1.5 + self.hamming_distance(x+1, y-1)
                 self.checkopenlist(x, y, x+1, y-1, cost, open_list)
             
+            # down-right diagonal
             if self.color_grid[[x+1, y]] == 0 and not self.in_close_list(x+1,y):
                 cost = 1.5 + self.hamming_distance(x+1, y)
                 self.checkopenlist(x, y, x+1, y, cost, open_list)
             
-            # horizontal straight lines
+            ############################
+            # straight lines
+            ############################
+
+            # right
             if (self.color_grid[x][y] == 1 and self.color_grid[x+1][y] == 0) or \
                 (self.color_grid[x][y] == 0 and self.color_grid[x+1][y] == 1) and \
                 (not self.in_close_list(x,y+1)):
                 cost = 1.3 + self. hamming_distance(x, y+1)
                 self.checkopenlist(x, y, x, y+1, cost, open_list)
-                    
+
             if (self.color_grid[x][y] == 0 and self.color_grid[x+1][y] == 0) and (not self.in_close_list(x,y+1)):
-                cost = 1 + self. hamming_distance(x+1, y)
+                cost = 1 + self. hamming_distance(x, y+1)
                 self.checkopenlist(x, y, x, y+1, cost, open_list)
 
-                
+            # left
             if (self.color_grid[x][y-1] == 1 and self.color_grid[x+1][y-1] == 0) or (self.color_grid[x][y-1] == 0 \
                 and self.color_grid[x+1][y-1] == 1) and not self.in_close_list(x,y-1) :
                 cost = 1.3 + self. hamming_distance(x, y-1)
@@ -90,7 +101,7 @@ class A_star_search:
                 cost = 1 + self. hamming_distance(x, y-1)
                 self.checkopenlist(x, y, x, y-1, cost, open_list)
             
-            # vertical straight lines
+            # up
             if (self.color_grid[x][y] == 1 and self.color_grid[x][y-1] == 0) or (self.color_grid[x][y] == 0 \
                 and self.color_grid[x][y-1] == 1) and not self.in_close_list(x-1,y) :
                 cost = 1.3 + self. hamming_distance(x-1, y)
@@ -100,7 +111,8 @@ class A_star_search:
             if (self.color_grid[x][y] == 0 and self.color_grid[x][y-1] == 0) and not self.in_close_list(x-1,y):
                 cost = 1 + self. hamming_distance(x-1, y)
                 self.checkopenlist(x, y, x-1, y, cost, open_list)   
-                
+            
+            # down
             if (self.color_grid[x+1][y] == 1 and self.color_grid[x+1][y-1] == 0) or (self.color_grid[x+1][y] == 0\
                 and self.color_grid[x+1][y-1] == 1) and not self.in_close_list(x+1,y):
                 cost = 1.3 + self. hamming_distance(x+1, y)
@@ -136,8 +148,8 @@ def search (starting_pt, end_pt, threshold, file_data = 'crime_dt.shp'):
     #  xmin = -73.590, xmax = -73.550, ymax = 45.530, ymin = 45.490
     xmin, ymin, xmax, ymax = crime_dt.total_bounds
 
-    if starting_pt[0] < ymin or starting_pt[0] > ymax or starting_pt[1] < xmin or starting_pt > xmax :
-        sys.exit('point not in the area of interest')
+    if starting_pt[0] < ymin or starting_pt[0] > ymax or starting_pt[1] < xmin or starting_pt[1] > xmax :
+        sys.exit('point not in the area of interest, area : x[{}:{}],y[{}:{}]'.format(xmin,xmax,ymin,ymax))
 
     #  get rows and columns
     number_columns = math.ceil((xmax - xmin)/step)
@@ -167,6 +179,7 @@ def search (starting_pt, end_pt, threshold, file_data = 'crime_dt.shp'):
         for j in range(0,number_columns):
             if grid[i][j] > threshold_high_crime:
                 color_grid[i][j] = 1
+
 
     star_search = A_star_search(starting_pt[0], starting_pt[1], end_pt[0], end_pt[1], color_grid)
     list_points = star_search.search()
@@ -226,7 +239,7 @@ if __name__ == '__main__':
                             continue
                         starting_pt = [float(starting_pt[0]),float(starting_pt[1])]
                         end_pt = [float(end_pt[0]),float(end_pt[1])]
-                        search(starting_pt,end_pt,threshold)
+                        search0.(starting_pt,end_pt,threshold)
                     elif main_command == 'exit':
                         print('<< Exiting...')
                         break
