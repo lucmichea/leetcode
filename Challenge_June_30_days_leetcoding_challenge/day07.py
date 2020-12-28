@@ -42,4 +42,17 @@ from typing import List
 
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
-        
+        print(amount, coins)
+        if amount < 0 :
+            return 0
+        elif amount == 0 :
+            return 1
+        else :
+            correct_answers = 0
+            for index, coin in enumerate(coins):
+                correct_answers += self.change(amount=amount - coin, coins=coins[index:]) # we use coins[index:] to get rid of swap similarities
+            return correct_answers
+
+if __name__ == "__main__":
+    sol = Solution()
+    print(sol.change(5, [5,2,1]))

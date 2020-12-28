@@ -32,7 +32,20 @@ Constraints:
     Both strings consists only of lowercase characters.
 
 """
+import copy
 
 class Solution:
     def isSubsequence(self, s: str, t: str) -> bool:
-        
+        copy_t = copy.copy(t)
+        for index, character in enumerate(s):
+            if character in copy_t :
+                if index == len(s) - 1:
+                    return True
+                copy_t = copy_t[copy_t.index(character)+1:]
+            else:
+                return False
+
+if __name__ == "__main__":
+    sol = Solution()
+    print(sol.isSubsequence("axc", "ahbgdc"))
+    print(sol.isSubsequence("abc", "ahbgdc"))
