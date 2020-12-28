@@ -32,4 +32,16 @@ from typing import List
 
 class Solution:
     def searchInsert(self, nums: List[int], target: int) -> int:
-        
+        try :
+            return nums.index(target)
+        except ValueError:
+            index = 0
+            for num in nums :
+                if target < num :
+                    break
+                index += 1
+            return index
+
+if __name__ == '__main__':
+    sol = Solution()
+    print(sol.searchInsert([1,3,5,6],7))
