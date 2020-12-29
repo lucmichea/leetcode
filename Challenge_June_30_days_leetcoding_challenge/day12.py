@@ -36,31 +36,43 @@ Example:
     randomSet.getRandom();
 
 """
-
+import random
+#  we could use a set() in python but we will use a list
 class RandomizedSet:
 
     def __init__(self):
         """
         Initialize your data structure here.
         """
+        self.storage = []
         
 
     def insert(self, val: int) -> bool:
         """
         Inserts a value to the set. Returns true if the set did not already contain the specified element.
         """
+        if val not in self.storage:
+            self.storage.append(val)
+            return True
+        return False
         
 
     def remove(self, val: int) -> bool:
         """
         Removes a value from the set. Returns true if the set contained the specified element.
         """
+        if val in self.storage:
+            self.storage.remove(val)
+            return True
+        return False
         
 
     def getRandom(self) -> int:
         """
         Get a random element from the set.
         """
+        random_index = random.randint(0, len(self.storage)-1)
+        return self.storage[random_index]
         
 
 
