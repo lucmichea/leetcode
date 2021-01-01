@@ -46,4 +46,35 @@ Constraints:
 
 class Solution:
     def validIPAddress(self, IP: str) -> str:
-        
+        nothing = "Neither"
+        if len(IP.split('.')) == 4:
+            # possibly IPv4
+            for num in IP.split('.'):
+                try:
+                    if int(num) < 0 or int(num) > 255:
+                        return nothing
+                    if int(num) != 0 and num[0] == '0':
+                        return nothing
+                except ValueError:
+                    return nothing
+
+            # no problem was detected
+            return "IPv4"
+
+        elif len(IP.split(':')) == 8:
+            # possibly IPv6
+            for num in IP.split(':'):
+                try:
+                    if len(num) > 4:
+                        return nothing
+                    
+                    if num != hex(int(num,16)).split('x')[-1]:
+                        return nothing
+                except ValueError:
+                    return nothing
+            
+            # no problem was detected
+            return "IPv6"
+
+        else:
+            return nothing
